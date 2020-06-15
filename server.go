@@ -4,8 +4,10 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/dgrijalva/jwt-go"
 	"gopkg.in/oauth2.v4/errors"
 	"gopkg.in/oauth2.v4/manage"
+	"gopkg.in/oauth2.v4/generates"
 	"gopkg.in/oauth2.v4/models"
 	"gopkg.in/oauth2.v4/server"
 	"gopkg.in/oauth2.v4/store"
@@ -15,6 +17,7 @@ func main() {
 	manager := manage.NewDefaultManager()
 	// token memory store
 	manager.MustTokenStorage(store.NewMemoryTokenStore())
+	manager.MapAccessGenerate(generates.NewJWTAccessGenerate([]byte("00000000"), jwt.SigningMethodHS512))
 
 	// client memory store
 	clientStore := store.NewClientStore()
